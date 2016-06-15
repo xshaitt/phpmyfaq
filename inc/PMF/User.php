@@ -140,7 +140,7 @@ class PMF_User
      *
      * @var string
      */
-    private $validUsername = '/^[a-z0-9][\w\.\-@]+/i';
+    private $validUsername = '/^([a-z0-9]|[\w\.\-@]|[\x{4e00}-\x{9fa5}])+$/ui';
 
     /**
      * user ID.
@@ -461,12 +461,12 @@ class PMF_User
     {
         $select = sprintf("
             SELECT
-                login, 
+                login,
                 user_id,
                 account_status
             FROM
                 %sfaquser
-            WHERE 
+            WHERE
                 login LIKE '%s'",
             PMF_Db::getTablePrefix(),
             $this->config->getDb()->escape($search.'%')
@@ -970,7 +970,7 @@ class PMF_User
     }
 
     /**
-     * Returns an array of all users found in the database. By default, the 
+     * Returns an array of all users found in the database. By default, the
      * anonymous User will not be returned. The returned array contains the
      * user ID as key, the values are login name, account status, authentication
      * source and the user creation date.
